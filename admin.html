@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard | Bros K Ventures</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="admin-page">
+
+    <header class="admin-header">
+
+        <div class="admin-header-inner">
+
+            <div class="admin-dashboard-brand">
+
+                <img
+                    src="images/logo/bk-logo.png"
+                    alt="Bros K Ventures logo"
+                >
+
+                <div>
+                    <h1>Bros K Ventures</h1>
+                    <p>Admin Dashboard</p>
+                </div>
+
+            </div>
+
+            <button
+                id="admin-logout-btn"
+                class="admin-logout-btn"
+                type="button"
+            >
+                Sign Out
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="admin-dashboard">
+
+        <section class="admin-dashboard-heading">
+
+            <p class="section-label">
+                CUSTOMER INQUIRIES
+            </p>
+
+            <h2>Quote Requests</h2>
+
+            <p>
+                View quote requests submitted through the
+                Bros K Ventures website.
+            </p>
+
+        </section>
+
+
+        <section class="admin-summary">
+
+            <div class="admin-summary-card">
+                <span>Total Requests</span>
+
+                <strong id="total-requests">
+                    0
+                </strong>
+            </div>
+
+        </section>
+
+
+        <div
+            id="admin-dashboard-status"
+            class="admin-dashboard-status"
+        >
+            Loading quote requests...
+        </div>
+
+
+        <section
+            id="quote-list"
+            class="admin-quote-list"
+        >
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/admin.js"></script>
+
+</body>
+
+</html>
