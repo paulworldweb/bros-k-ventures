@@ -2,7 +2,8 @@
 // SUPABASE ADMIN CONNECTION
 // ========================================
 
-const SUPABASE_URL = "https://uzuqjcceorpyxcowmrla.supabase.co";
+const SUPABASE_URL =
+    "https://uzuqjcceorpyxcowmrla.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_GPz_XAfX7fi6q7ZxtZ7GjQ_kN41buJO";
@@ -36,11 +37,12 @@ async function checkForInvitation() {
         return;
     }
 
-    // Supabase invitation links include type=invite
+
     const hashParams =
         new URLSearchParams(
             window.location.hash.substring(1)
         );
+
 
     const isInvitation =
         hashParams.get("type") === "invite";
@@ -63,8 +65,11 @@ async function checkForInvitation() {
 
     if (session) {
 
-        normalLoginArea.style.display =
-            "none";
+        if (normalLoginArea) {
+            normalLoginArea.style.display =
+                "none";
+        }
+
 
         passwordSetupArea.style.display =
             "block";
@@ -107,11 +112,15 @@ if (passwordSetupForm) {
                 );
 
 
-            passwordSetupStatus.textContent = "";
+            passwordSetupStatus.textContent =
+                "";
 
 
-            // Make sure passwords match
-            if (newPassword !== confirmPassword) {
+            // Passwords must match
+            if (
+                newPassword !==
+                confirmPassword
+            ) {
 
                 passwordSetupStatus.textContent =
                     "The passwords do not match.";
@@ -123,8 +132,10 @@ if (passwordSetupForm) {
             }
 
 
-            // Require at least 8 characters
-            if (newPassword.length < 8) {
+            // Minimum password length
+            if (
+                newPassword.length < 8
+            ) {
 
                 passwordSetupStatus.textContent =
                     "Password must be at least 8 characters.";
@@ -136,19 +147,30 @@ if (passwordSetupForm) {
             }
 
 
-            button.disabled = true;
+            button.disabled =
+                true;
 
             button.textContent =
                 "Creating Password...";
 
 
-            const { error } =
-                await adminSupabase.auth.updateUser({
-                    password: newPassword
-                });
+            const {
+                error
+            } =
+                await adminSupabase.auth
+                    .updateUser({
+                        password:
+                            newPassword
+                    });
 
 
             if (error) {
+
+                console.error(
+                    "Password setup error:",
+                    error
+                );
+
 
                 passwordSetupStatus.textContent =
                     "Unable to create password. Please try again.";
@@ -156,7 +178,9 @@ if (passwordSetupForm) {
                 passwordSetupStatus.className =
                     "admin-login-status error";
 
-                button.disabled = false;
+
+                button.disabled =
+                    false;
 
                 button.textContent =
                     "Create Password";
@@ -172,16 +196,19 @@ if (passwordSetupForm) {
                 "admin-login-status success";
 
 
-            // Take admin to dashboard
-            setTimeout(function () {
+            setTimeout(
+                function () {
 
-                window.location.href =
-                    "admin.html";
+                    window.location.href =
+                        "admin.html";
 
-            }, 1000);
+                },
+                1000
+            );
 
         }
     );
+
 }
 
 
@@ -190,10 +217,39 @@ if (passwordSetupForm) {
 // ========================================
 
 const adminLoginForm =
-    document.querySelector("#admin-login-form");
+    document.querySelector(
+        "#admin-login-form"
+    );
 
 const adminLoginStatus =
-    document.querySelector("#admin-login-status");
+    document.querySelector(
+        "#admin-login-status"
+    );
+
+
+// Show inactivity logout message
+if (adminLoginStatus) {
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    if (
+        urlParams.get("reason") ===
+        "inactive"
+    ) {
+
+        adminLoginStatus.textContent =
+            "Your session ended because you were inactive. Please sign in again.";
+
+        adminLoginStatus.className =
+            "admin-login-status error";
+
+    }
+
+}
 
 
 if (adminLoginForm) {
@@ -207,14 +263,18 @@ if (adminLoginForm) {
 
             const email =
                 document
-                    .querySelector("#admin-email")
+                    .querySelector(
+                        "#admin-email"
+                    )
                     .value
                     .trim();
 
 
             const password =
                 document
-                    .querySelector("#admin-password")
+                    .querySelector(
+                        "#admin-password"
+                    )
                     .value;
 
 
@@ -224,27 +284,35 @@ if (adminLoginForm) {
                 );
 
 
-            adminLoginStatus.textContent = "";
+            adminLoginStatus.textContent =
+                "";
 
 
-            button.disabled = true;
+            button.disabled =
+                true;
 
             button.textContent =
                 "Signing In...";
 
 
-            const { data, error } =
+            const {
+                data,
+                error
+            } =
                 await adminSupabase.auth
                     .signInWithPassword({
-
                         email: email,
-
                         password: password
-
                     });
 
 
             if (error) {
+
+                console.error(
+                    "Login error:",
+                    error
+                );
+
 
                 adminLoginStatus.textContent =
                     "Unable to sign in. Check your email and password.";
@@ -252,7 +320,9 @@ if (adminLoginForm) {
                 adminLoginStatus.className =
                     "admin-login-status error";
 
-                button.disabled = false;
+
+                button.disabled =
+                    false;
 
                 button.textContent =
                     "Sign In";
@@ -265,10 +335,12 @@ if (adminLoginForm) {
 
                 window.location.href =
                     "admin.html";
+
             }
 
         }
     );
+
 }
 
 
@@ -277,7 +349,9 @@ if (adminLoginForm) {
 // ========================================
 
 const quoteList =
-    document.querySelector("#quote-list");
+    document.querySelector(
+        "#quote-list"
+    );
 
 const dashboardStatus =
     document.querySelector(
@@ -285,9 +359,40 @@ const dashboardStatus =
     );
 
 const totalRequests =
-    document.querySelector("#total-requests");
+    document.querySelector(
+        "#total-requests"
+    );
+
+const unreadRequests =
+    document.querySelector(
+        "#unread-requests"
+    );
+
+const archivedRequests =
+    document.querySelector(
+        "#archived-requests"
+    );
+
+const quoteSearch =
+    document.querySelector(
+        "#quote-search"
+    );
+
+const quoteStatusFilter =
+    document.querySelector(
+        "#quote-status-filter"
+    );
+
+const showArchived =
+    document.querySelector(
+        "#show-archived"
+    );
 
 
+let allQuotes = [];
+
+
+// Load dashboard only on admin.html
 if (quoteList) {
 
     loadAdminDashboard();
@@ -295,20 +400,24 @@ if (quoteList) {
 }
 
 
+// ========================================
+// LOAD DASHBOARD
+// ========================================
+
 async function loadAdminDashboard() {
 
     const {
         data: sessionData
     } =
-        await adminSupabase.auth.getSession();
+        await adminSupabase.auth
+            .getSession();
 
 
     const session =
         sessionData.session;
 
 
-    // If nobody is signed in,
-    // return to login page
+    // No logged-in admin
     if (!session) {
 
         window.location.href =
@@ -318,8 +427,10 @@ async function loadAdminDashboard() {
     }
 
 
-    // Check that the signed-in user
-    // is listed in admin_users
+    // ========================================
+    // VERIFY ADMIN USER
+    // ========================================
+
     const {
         data: adminRecord,
         error: adminError
@@ -339,7 +450,15 @@ async function loadAdminDashboard() {
         !adminRecord
     ) {
 
-        await adminSupabase.auth.signOut();
+        console.error(
+            "Admin verification error:",
+            adminError
+        );
+
+
+        await adminSupabase.auth
+            .signOut();
+
 
         window.location.href =
             "admin-login.html";
@@ -348,7 +467,10 @@ async function loadAdminDashboard() {
     }
 
 
-    // Get quote requests
+    // ========================================
+    // LOAD QUOTE REQUESTS
+    // ========================================
+
     const {
         data: quotes,
         error
@@ -371,53 +493,273 @@ async function loadAdminDashboard() {
             error
         );
 
-        dashboardStatus.textContent =
-            "Unable to load quote requests.";
+
+        if (dashboardStatus) {
+
+            dashboardStatus.style.display =
+                "block";
+
+            dashboardStatus.textContent =
+                "Unable to load quote requests.";
+
+        }
 
         return;
     }
 
 
-    totalRequests.textContent =
-        quotes.length;
+    allQuotes =
+        quotes || [];
 
 
-    if (quotes.length === 0) {
+    updateDashboardSummary();
 
-        dashboardStatus.textContent =
-            "No quote requests have been submitted yet.";
+    renderQuotes();
+
+}
+
+
+// ========================================
+// DASHBOARD SUMMARY
+// ========================================
+
+function updateDashboardSummary() {
+
+    const unreadCount =
+        allQuotes.filter(
+            function (quote) {
+
+                return (
+                    !quote.is_read &&
+                    !quote.archived
+                );
+
+            }
+        ).length;
+
+
+    const archivedCount =
+        allQuotes.filter(
+            function (quote) {
+
+                return (
+                    quote.archived === true
+                );
+
+            }
+        ).length;
+
+
+    if (totalRequests) {
+
+        totalRequests.textContent =
+            allQuotes.length;
+
+    }
+
+
+    if (unreadRequests) {
+
+        unreadRequests.textContent =
+            unreadCount;
+
+    }
+
+
+    if (archivedRequests) {
+
+        archivedRequests.textContent =
+            archivedCount;
+
+    }
+
+}
+
+
+// ========================================
+// FILTER + DISPLAY QUOTES
+// ========================================
+
+function renderQuotes() {
+
+    if (!quoteList) {
+        return;
+    }
+
+
+    const searchValue =
+        quoteSearch
+            ? quoteSearch.value
+                .trim()
+                .toLowerCase()
+            : "";
+
+
+    const statusValue =
+        quoteStatusFilter
+            ? quoteStatusFilter.value
+            : "All";
+
+
+    const includeArchived =
+        showArchived
+            ? showArchived.checked
+            : false;
+
+
+    const filteredQuotes =
+        allQuotes.filter(
+            function (quote) {
+
+                // ========================================
+                // ARCHIVE FILTER
+                // ========================================
+
+                if (
+                    !includeArchived &&
+                    quote.archived === true
+                ) {
+
+                    return false;
+
+                }
+
+
+                // ========================================
+                // STATUS FILTER
+                // ========================================
+
+                if (
+                    statusValue !== "All" &&
+                    quote.status !==
+                        statusValue
+                ) {
+
+                    return false;
+
+                }
+
+
+                // ========================================
+                // SEARCH
+                // ========================================
+
+                const searchableText = `
+                    ${quote.full_name || ""}
+                    ${quote.email || ""}
+                    ${quote.phone || ""}
+                    ${quote.service_needed || ""}
+                    ${quote.project_location || ""}
+                    ${quote.project_details || ""}
+                    ${quote.admin_notes || ""}
+                    ${quote.status || ""}
+                `.toLowerCase();
+
+
+                if (
+                    searchValue &&
+                    !searchableText.includes(
+                        searchValue
+                    )
+                ) {
+
+                    return false;
+
+                }
+
+
+                return true;
+
+            }
+        );
+
+
+    quoteList.innerHTML =
+        "";
+
+
+    if (
+        filteredQuotes.length === 0
+    ) {
+
+        if (dashboardStatus) {
+
+            dashboardStatus.style.display =
+                "block";
+
+            dashboardStatus.textContent =
+                "No matching quote requests found.";
+
+        }
 
         return;
     }
 
 
-    dashboardStatus.style.display =
-        "none";
+    if (dashboardStatus) {
+
+        dashboardStatus.style.display =
+            "none";
+
+    }
 
 
-    quoteList.innerHTML = "";
+    filteredQuotes.forEach(
+        function (quote) {
+
+            createQuoteCard(
+                quote
+            );
+
+        }
+    );
+
+}
 
 
-    quotes.forEach(function (quote) {
+// ========================================
+// CREATE QUOTE CARD
+// ========================================
 
-        const card =
-            document.createElement("article");
+function createQuoteCard(quote) {
 
-
-        card.className =
-            "admin-quote-card";
-
-
-        const submittedDate =
-            new Date(
-                quote.created_at
-            ).toLocaleString();
+    const card =
+        document.createElement(
+            "article"
+        );
 
 
-        card.innerHTML = `
-            <div class="admin-quote-top">
+    card.className =
+        "admin-quote-card";
 
-                <div>
+
+    // Highlight unread requests
+    if (!quote.is_read) {
+
+        card.classList.add(
+            "admin-quote-unread"
+        );
+
+    }
+
+
+    const submittedDate =
+        new Date(
+            quote.created_at
+        ).toLocaleString();
+
+
+    const currentStatus =
+        quote.status || "New";
+
+
+    card.innerHTML = `
+
+        <div class="admin-quote-top">
+
+            <div>
+
+                <div class="admin-quote-labels">
 
                     <span class="admin-service-label">
                         ${escapeHTML(
@@ -425,62 +767,638 @@ async function loadAdminDashboard() {
                         )}
                     </span>
 
-                    <h3>
-                        ${escapeHTML(
-                            quote.full_name
-                        )}
-                    </h3>
+
+                    ${
+                        !quote.is_read
+                            ? `
+                            <span class="admin-new-badge">
+                                NEW
+                            </span>
+                            `
+                            : ""
+                    }
+
+
+                    ${
+                        quote.archived
+                            ? `
+                            <span class="admin-archived-badge">
+                                ARCHIVED
+                            </span>
+                            `
+                            : ""
+                    }
 
                 </div>
 
-                <time>
-                    ${submittedDate}
-                </time>
 
-            </div>
-
-
-            <div class="admin-quote-details">
-
-                <p>
-                    <strong>Phone:</strong>
-                    ${escapeHTML(quote.phone)}
-                </p>
-
-                <p>
-                    <strong>Email:</strong>
-                    ${escapeHTML(quote.email)}
-                </p>
-
-                <p>
-                    <strong>Location:</strong>
+                <h3>
                     ${escapeHTML(
-                        quote.project_location
+                        quote.full_name
                     )}
-                </p>
+                </h3>
 
             </div>
 
 
-            <div class="admin-project-message">
+            <time>
+                ${escapeHTML(
+                    submittedDate
+                )}
+            </time>
 
+        </div>
+
+
+        <div class="admin-quote-details">
+
+            <p>
                 <strong>
-                    Project Details
+                    Phone:
                 </strong>
 
-                <p>
-                    ${escapeHTML(
-                        quote.project_details
+                ${escapeHTML(
+                    quote.phone
+                )}
+            </p>
+
+
+            <p>
+                <strong>
+                    Email:
+                </strong>
+
+                ${escapeHTML(
+                    quote.email
+                )}
+            </p>
+
+
+            <p>
+                <strong>
+                    Location:
+                </strong>
+
+                ${escapeHTML(
+                    quote.project_location
+                )}
+            </p>
+
+        </div>
+
+
+        <div class="admin-contact-actions">
+
+            <a
+                class="admin-action-link"
+                href="tel:${escapeHTML(
+                    quote.phone
+                )}"
+            >
+                Call Customer
+            </a>
+
+
+            <a
+                class="admin-action-link"
+                href="mailto:${escapeHTML(
+                    quote.email
+                )}"
+            >
+                Email Customer
+            </a>
+
+        </div>
+
+
+        <div class="admin-project-message">
+
+            <strong>
+                Project Details
+            </strong>
+
+            <p>
+                ${escapeHTML(
+                    quote.project_details
+                )}
+            </p>
+
+        </div>
+
+
+        <div class="admin-management-area">
+
+            <div class="admin-management-field">
+
+                <label>
+                    Status
+                </label>
+
+                <select
+                    class="admin-status-select"
+                >
+
+                    ${createStatusOptions(
+                        currentStatus
                     )}
-                </p>
+
+                </select>
 
             </div>
-        `;
 
 
-        quoteList.appendChild(card);
+            <div class="admin-management-field">
 
-    });
+                <label>
+                    Private Admin Notes
+                </label>
+
+                <textarea
+                    class="admin-notes-input"
+                    placeholder="Add a private note about this customer..."
+                >${escapeHTML(
+                    quote.admin_notes || ""
+                )}</textarea>
+
+
+                <button
+                    type="button"
+                    class="admin-save-notes-btn"
+                >
+                    Save Notes
+                </button>
+
+            </div>
+
+
+            <div class="admin-card-actions">
+
+                <button
+                    type="button"
+                    class="admin-read-btn"
+                >
+                    ${
+                        quote.is_read
+                            ? "Mark as Unread"
+                            : "Mark as Read"
+                    }
+                </button>
+
+
+                <button
+                    type="button"
+                    class="admin-archive-btn"
+                >
+                    ${
+                        quote.archived
+                            ? "Restore Request"
+                            : "Archive Request"
+                    }
+                </button>
+
+
+                <button
+                    type="button"
+                    class="admin-delete-btn"
+                >
+                    Delete Permanently
+                </button>
+
+            </div>
+
+        </div>
+    `;
+
+
+    quoteList.appendChild(
+        card
+    );
+
+
+    // ========================================
+    // STATUS CHANGE
+    // ========================================
+
+    const statusSelect =
+        card.querySelector(
+            ".admin-status-select"
+        );
+
+
+    statusSelect.addEventListener(
+        "change",
+        async function () {
+
+            await updateQuote(
+                quote.id,
+                {
+                    status:
+                        statusSelect.value
+                }
+            );
+
+        }
+    );
+
+
+    // ========================================
+    // SAVE PRIVATE NOTES
+    // ========================================
+
+    const notesInput =
+        card.querySelector(
+            ".admin-notes-input"
+        );
+
+
+    const saveNotesButton =
+        card.querySelector(
+            ".admin-save-notes-btn"
+        );
+
+
+    saveNotesButton.addEventListener(
+        "click",
+        async function () {
+
+            saveNotesButton.disabled =
+                true;
+
+            saveNotesButton.textContent =
+                "Saving...";
+
+
+            const success =
+                await updateQuote(
+                    quote.id,
+                    {
+                        admin_notes:
+                            notesInput.value
+                                .trim()
+                    }
+                );
+
+
+            if (!success) {
+
+                saveNotesButton.disabled =
+                    false;
+
+                saveNotesButton.textContent =
+                    "Save Notes";
+
+            }
+
+        }
+    );
+
+
+    // ========================================
+    // MARK READ / UNREAD
+    // ========================================
+
+    const readButton =
+        card.querySelector(
+            ".admin-read-btn"
+        );
+
+
+    readButton.addEventListener(
+        "click",
+        async function () {
+
+            await updateQuote(
+                quote.id,
+                {
+                    is_read:
+                        !quote.is_read
+                }
+            );
+
+        }
+    );
+
+
+    // ========================================
+    // ARCHIVE / RESTORE
+    // ========================================
+
+    const archiveButton =
+        card.querySelector(
+            ".admin-archive-btn"
+        );
+
+
+    archiveButton.addEventListener(
+        "click",
+        async function () {
+
+            await updateQuote(
+                quote.id,
+                {
+                    archived:
+                        !quote.archived
+                }
+            );
+
+        }
+    );
+
+
+    // ========================================
+    // PERMANENTLY DELETE REQUEST
+    // ========================================
+
+    const deleteButton =
+        card.querySelector(
+            ".admin-delete-btn"
+        );
+
+
+    deleteButton.addEventListener(
+        "click",
+        async function () {
+
+            const confirmed =
+                window.confirm(
+                    "Permanently delete this quote request from " +
+                    quote.full_name +
+                    "? This cannot be undone."
+                );
+
+
+            if (!confirmed) {
+
+                return;
+
+            }
+
+
+            deleteButton.disabled =
+                true;
+
+            deleteButton.textContent =
+                "Deleting...";
+
+
+            const {
+                error
+            } =
+                await adminSupabase
+                    .from(
+                        "quote_requests"
+                    )
+                    .delete()
+                    .eq(
+                        "id",
+                        quote.id
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Delete request error:",
+                    error
+                );
+
+
+                alert(
+                    "Unable to delete this request."
+                );
+
+
+                deleteButton.disabled =
+                    false;
+
+                deleteButton.textContent =
+                    "Delete Permanently";
+
+                return;
+            }
+
+
+            await loadAdminDashboard();
+
+        }
+    );
+
+}
+
+
+// ========================================
+// STATUS OPTIONS
+// ========================================
+
+function createStatusOptions(
+    currentStatus
+) {
+
+    const statuses = [
+        "New",
+        "Contacted",
+        "Quote Sent",
+        "Approved",
+        "Closed"
+    ];
+
+
+    return statuses
+        .map(
+            function (status) {
+
+                const selected =
+                    status ===
+                    currentStatus
+                        ? "selected"
+                        : "";
+
+
+                return `
+                    <option
+                        value="${status}"
+                        ${selected}
+                    >
+                        ${status}
+                    </option>
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+// ========================================
+// UPDATE QUOTE
+// ========================================
+
+async function updateQuote(
+    quoteId,
+    changes
+) {
+
+    const {
+        error
+    } =
+        await adminSupabase
+            .from(
+                "quote_requests"
+            )
+            .update(
+                changes
+            )
+            .eq(
+                "id",
+                quoteId
+            );
+
+
+    if (error) {
+
+        console.error(
+            "Quote update error:",
+            error
+        );
+
+
+        alert(
+            "Unable to update this request."
+        );
+
+
+        return false;
+
+    }
+
+
+    await loadAdminDashboard();
+
+
+    return true;
+
+}
+
+
+// ========================================
+// SEARCH / FILTER EVENTS
+// ========================================
+
+if (quoteSearch) {
+
+    quoteSearch.addEventListener(
+        "input",
+        function () {
+
+            renderQuotes();
+
+        }
+    );
+
+}
+
+
+if (quoteStatusFilter) {
+
+    quoteStatusFilter.addEventListener(
+        "change",
+        function () {
+
+            renderQuotes();
+
+        }
+    );
+
+}
+
+
+if (showArchived) {
+
+    showArchived.addEventListener(
+        "change",
+        function () {
+
+            renderQuotes();
+
+        }
+    );
+
+}
+
+
+// ========================================
+// ADMIN INACTIVITY AUTO LOGOUT
+// ========================================
+
+let inactivityTimer;
+
+
+// 15 minutes
+const INACTIVITY_LIMIT =
+    15 * 60 * 1000;
+
+
+// Restart inactivity timer
+function resetInactivityTimer() {
+
+    clearTimeout(
+        inactivityTimer
+    );
+
+
+    inactivityTimer =
+        setTimeout(
+            logoutForInactivity,
+            INACTIVITY_LIMIT
+        );
+
+}
+
+
+// Sign out after inactivity
+async function logoutForInactivity() {
+
+    await adminSupabase.auth
+        .signOut();
+
+
+    window.location.href =
+        "admin-login.html?reason=inactive";
+
+}
+
+
+// Only run inactivity timer
+// on the admin dashboard
+if (quoteList) {
+
+    const activityEvents = [
+        "mousemove",
+        "mousedown",
+        "keydown",
+        "scroll",
+        "touchstart",
+        "click"
+    ];
+
+
+    activityEvents.forEach(
+        function (eventName) {
+
+            document.addEventListener(
+                eventName,
+                resetInactivityTimer,
+                {
+                    passive: true
+                }
+            );
+
+        }
+    );
+
+
+    resetInactivityTimer();
 
 }
 
@@ -501,36 +1419,69 @@ if (adminLogoutBtn) {
         "click",
         async function () {
 
-            await adminSupabase.auth.signOut();
+            adminLogoutBtn.disabled =
+                true;
+
+            adminLogoutBtn.textContent =
+                "Signing Out...";
+
+
+            await adminSupabase.auth
+                .signOut();
+
 
             window.location.href =
                 "admin-login.html";
 
         }
     );
+
 }
 
 
 // ========================================
 // SECURITY HELPER
+// Prevent customer-entered HTML or
+// JavaScript from being executed.
 // ========================================
 
 function escapeHTML(value) {
 
-    if (!value) {
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
         return "";
+
     }
 
 
     return String(value)
 
-        .replaceAll("&", "&amp;")
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
 
-        .replaceAll("<", "&lt;")
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
 
-        .replaceAll(">", "&gt;")
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
 
-        .replaceAll('"', "&quot;")
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
 
-        .replaceAll("'", "&#039;");
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
 }

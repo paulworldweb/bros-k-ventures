@@ -3020,3 +3020,198 @@ body {
         padding: 30px 24px;
     }
 }
+
+
+/* ========================================
+   ADMIN DASHBOARD MANAGEMENT
+======================================== */
+
+.admin-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.admin-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin: 30px 0;
+}
+
+.admin-controls input,
+.admin-controls select {
+    padding: 14px 16px;
+    border: 1px solid #ccd5df;
+    border-radius: 10px;
+    font: inherit;
+    background: #ffffff;
+}
+
+#quote-search {
+    flex: 1;
+    min-width: 240px;
+}
+
+.admin-archive-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.admin-quote-unread {
+    border-left-width: 7px;
+}
+
+.admin-quote-labels {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-new-badge,
+.admin-archived-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.admin-new-badge {
+    background: #e8f7ed;
+    color: #14763d;
+}
+
+.admin-archived-badge {
+    background: #eeeeee;
+    color: #555555;
+}
+
+.admin-contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 18px 0;
+}
+
+.admin-action-link {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: #082944;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.admin-management-area {
+    margin-top: 24px;
+    padding-top: 22px;
+    border-top: 1px solid #dde3ea;
+}
+
+.admin-management-field {
+    margin-bottom: 20px;
+}
+
+.admin-management-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.admin-status-select,
+.admin-notes-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccd5df;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.admin-notes-input {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.admin-save-notes-btn,
+.admin-read-btn,
+.admin-archive-btn {
+    margin-top: 10px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+.admin-save-notes-btn {
+    background: #f5a000;
+    color: #062440;
+}
+
+.admin-read-btn {
+    background: #082944;
+    color: #ffffff;
+}
+
+.admin-archive-btn {
+    background: #e7e9ec;
+    color: #17212b;
+}
+
+.admin-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+
+@media (max-width: 700px) {
+
+    .admin-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #quote-search {
+        width: 100%;
+    }
+
+    .admin-card-actions {
+        flex-direction: column;
+    }
+
+    .admin-read-btn,
+    .admin-archive-btn {
+        width: 100%;
+    }
+
+    .admin-delete-btn {
+        width: 100%;
+    }
+
+}
+
+
+.admin-delete-btn {
+    margin-top: 10px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: #b42318;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-delete-btn:hover {
+    opacity: 0.9;
+}

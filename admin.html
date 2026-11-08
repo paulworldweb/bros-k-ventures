@@ -56,7 +56,7 @@
             <h2>Quote Requests</h2>
 
             <p>
-                View quote requests submitted through the
+                Manage quote requests submitted through the
                 Bros K Ventures website.
             </p>
 
@@ -67,11 +67,50 @@
 
             <div class="admin-summary-card">
                 <span>Total Requests</span>
-
-                <strong id="total-requests">
-                    0
-                </strong>
+                <strong id="total-requests">0</strong>
             </div>
+
+            <div class="admin-summary-card">
+                <span>Unread</span>
+                <strong id="unread-requests">0</strong>
+            </div>
+
+            <div class="admin-summary-card">
+                <span>Archived</span>
+                <strong id="archived-requests">0</strong>
+            </div>
+
+        </section>
+
+
+        <section class="admin-controls">
+
+            <input
+                type="search"
+                id="quote-search"
+                placeholder="Search name, email, phone, service..."
+                aria-label="Search quote requests"
+            >
+
+            <select
+                id="quote-status-filter"
+                aria-label="Filter quote requests by status"
+            >
+                <option value="All">All Statuses</option>
+                <option value="New">New</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Quote Sent">Quote Sent</option>
+                <option value="Approved">Approved</option>
+                <option value="Closed">Closed</option>
+            </select>
+
+            <label class="admin-archive-filter">
+                <input
+                    type="checkbox"
+                    id="show-archived"
+                >
+                Show archived
+            </label>
 
         </section>
 
