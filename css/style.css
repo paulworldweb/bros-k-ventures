@@ -26,6 +26,12 @@ body {
 
 .site-header {
     background-color: var(--navy);
+
+    position: sticky;
+    top: 0;
+    z-index: 2000;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
 }
 
 .nav-container {
@@ -2633,7 +2639,9 @@ body {
     }
 
     .site-header {
-        position: relative;
+        position: sticky;
+        top: 0;
+        z-index: 2000;
     }
 
     .hero-grid {
@@ -3214,4 +3222,225 @@ body {
 
 .admin-delete-btn:hover {
     opacity: 0.9;
+}
+
+
+/* ========================================
+   PROJECT IMAGE LIGHTBOX
+======================================== */
+
+.project-card img,
+.projects-page-image img {
+    cursor: zoom-in;
+}
+
+
+.project-lightbox {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 40px;
+
+    background: rgba(0, 0, 0, 0.92);
+
+    z-index: 5000;
+}
+
+
+.project-lightbox.open {
+    display: flex;
+}
+
+
+.project-lightbox-image {
+    display: block;
+
+    max-width: 95%;
+    max-height: 90vh;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+
+    border-radius: 8px;
+}
+
+
+.project-lightbox-close {
+    position: fixed;
+
+    top: 20px;
+    right: 25px;
+
+    width: 48px;
+    height: 48px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #ffffff;
+    color: #0b1f33;
+
+    font-size: 22px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    z-index: 5001;
+}
+
+
+body.lightbox-open {
+    overflow: hidden;
+}
+
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .project-lightbox {
+        padding: 20px;
+    }
+
+
+    .project-lightbox-image {
+        max-width: 100%;
+        max-height: 85vh;
+    }
+
+
+    .project-lightbox-close {
+        top: 15px;
+        right: 15px;
+
+        width: 44px;
+        height: 44px;
+    }
+
+}
+
+
+/* ========================================
+   PROJECT VIDEOS
+======================================== */
+
+.project-videos {
+    background: #f4f6f8;
+    padding: 90px 5%;
+}
+
+
+.project-video-grid {
+    width: 100%;
+    max-width: 1650px;
+    margin: 50px auto 0;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 30px;
+}
+
+
+.project-video-card {
+    background: #ffffff;
+
+    border-radius: 16px;
+    overflow: hidden;
+
+    box-shadow: 0 10px 30px
+        rgba(0, 0, 0, 0.08);
+}
+
+
+.project-video-card video {
+    width: 100%;
+    height: 330px;
+
+    display: block;
+
+    object-fit: cover;
+
+    background: #000000;
+}
+
+
+.project-video-content {
+    padding: 28px;
+}
+
+
+.project-video-content h3 {
+    color: #071d33;
+
+    font-size: 26px;
+    line-height: 1.25;
+
+    margin-bottom: 14px;
+}
+
+
+.project-video-content > p:not(
+    .projects-page-category
+) {
+    color: #526071;
+
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+
+/* ========================================
+   PROJECT VIDEOS - TABLET
+======================================== */
+
+@media (max-width: 1100px) {
+
+    .project-video-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* ========================================
+   PROJECT VIDEOS - MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .project-videos {
+        padding: 65px 20px;
+    }
+
+
+    .project-video-grid {
+        grid-template-columns: 1fr;
+
+        gap: 28px;
+
+        margin-top: 35px;
+    }
+
+
+    .project-video-card video {
+        height: 280px;
+    }
+
+
+    .project-video-content {
+        padding: 24px 22px 28px;
+    }
+
+
+    .project-video-content h3 {
+        font-size: 25px;
+    }
+
 }

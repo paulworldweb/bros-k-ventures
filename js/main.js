@@ -157,3 +157,144 @@ if (quoteForm && supabaseClient) {
 
     });
 }
+
+// ========================================
+// PROJECT IMAGE LIGHTBOX
+// ========================================
+
+const projectImages =
+    document.querySelectorAll(
+        ".project-card img, .projects-page-image img"
+    );
+
+
+if (projectImages.length > 0) {
+
+    // Create lightbox
+    const lightbox =
+        document.createElement("div");
+
+    lightbox.className =
+        "project-lightbox";
+
+    lightbox.innerHTML = `
+        <button
+            type="button"
+            class="project-lightbox-close"
+            aria-label="Close image"
+        >
+            ✕
+        </button>
+
+        <img
+            class="project-lightbox-image"
+            src=""
+            alt=""
+        >
+    `;
+
+
+    document.body.appendChild(
+        lightbox
+    );
+
+
+    const lightboxImage =
+        lightbox.querySelector(
+            ".project-lightbox-image"
+        );
+
+    const closeButton =
+        lightbox.querySelector(
+            ".project-lightbox-close"
+        );
+
+
+    // Open image
+    projectImages.forEach(
+        function (image) {
+
+            image.addEventListener(
+                "click",
+                function () {
+
+                    lightboxImage.src =
+                        image.src;
+
+                    lightboxImage.alt =
+                        image.alt;
+
+                    lightbox.classList.add(
+                        "open"
+                    );
+
+                    document.body.classList.add(
+                        "lightbox-open"
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    // Close function
+    function closeLightbox() {
+
+        lightbox.classList.remove(
+            "open"
+        );
+
+        document.body.classList.remove(
+            "lightbox-open"
+        );
+
+    }
+
+
+    // Close button
+    closeButton.addEventListener(
+        "click",
+        closeLightbox
+    );
+
+
+    // Click dark background
+    lightbox.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target ===
+                lightbox
+            ) {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+
+    // Escape key
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape" &&
+                lightbox.classList.contains(
+                    "open"
+                )
+            ) {
+
+                closeLightbox();
+
+            }
+
+        }
+    );
+
+}
