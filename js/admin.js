@@ -227,7 +227,10 @@ const adminLoginStatus =
     );
 
 
-// Show inactivity logout message
+// ========================================
+// LOGIN STATUS MESSAGES
+// ========================================
+
 if (adminLoginStatus) {
 
     const urlParams =
@@ -236,6 +239,7 @@ if (adminLoginStatus) {
         );
 
 
+    // Inactivity logout message
     if (
         urlParams.get("reason") ===
         "inactive"
@@ -246,6 +250,21 @@ if (adminLoginStatus) {
 
         adminLoginStatus.className =
             "admin-login-status error";
+
+    }
+
+
+    // Successful password reset message
+    if (
+        urlParams.get("reason") ===
+        "password-reset"
+    ) {
+
+        adminLoginStatus.textContent =
+            "Your password was updated successfully. Please sign in with your new password.";
+
+        adminLoginStatus.className =
+            "admin-login-status success";
 
     }
 
@@ -337,6 +356,184 @@ if (adminLoginForm) {
                     "admin.html";
 
             }
+
+        }
+    );
+
+}
+
+
+// ========================================
+// FORGOT PASSWORD
+// ========================================
+
+const forgotPasswordBtn =
+    document.querySelector(
+        "#forgot-password-btn"
+    );
+
+const forgotPasswordArea =
+    document.querySelector(
+        "#forgot-password-area"
+    );
+
+const forgotPasswordForm =
+    document.querySelector(
+        "#forgot-password-form"
+    );
+
+const forgotPasswordStatus =
+    document.querySelector(
+        "#forgot-password-status"
+    );
+
+const backToLoginBtn =
+    document.querySelector(
+        "#back-to-login-btn"
+    );
+
+
+// Open forgot password form
+if (
+    forgotPasswordBtn &&
+    forgotPasswordArea &&
+    normalLoginArea
+) {
+
+    forgotPasswordBtn.addEventListener(
+        "click",
+        function () {
+
+            normalLoginArea.style.display =
+                "none";
+
+            forgotPasswordArea.style.display =
+                "block";
+
+        }
+    );
+
+}
+
+
+// Return to login
+if (
+    backToLoginBtn &&
+    forgotPasswordArea &&
+    normalLoginArea
+) {
+
+    backToLoginBtn.addEventListener(
+        "click",
+        function () {
+
+            forgotPasswordArea.style.display =
+                "none";
+
+            normalLoginArea.style.display =
+                "block";
+
+        }
+    );
+
+}
+
+
+// Send password reset email
+if (forgotPasswordForm) {
+
+    forgotPasswordForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document
+                    .querySelector(
+                        "#reset-email"
+                    )
+                    .value
+                    .trim();
+
+
+            const button =
+                forgotPasswordForm
+                    .querySelector(
+                        ".admin-login-btn"
+                    );
+
+
+            forgotPasswordStatus.textContent =
+                "";
+
+
+            button.disabled = true;
+
+            button.textContent =
+                "Sending Reset Link...";
+
+
+            // Works on both localhost
+            // and GitHub Pages
+            const resetPageUrl =
+                new URL(
+                    "admin-reset-password.html",
+                    window.location.href
+                ).href;
+
+
+            const {
+                error
+            } =
+                await adminSupabase.auth
+                    .resetPasswordForEmail(
+                        email,
+                        {
+                            redirectTo:
+                                resetPageUrl
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(
+                    "Password reset error:",
+                    error
+                );
+
+
+                forgotPasswordStatus.textContent =
+                    "Unable to send the reset link. Please try again.";
+
+                forgotPasswordStatus.className =
+                    "admin-login-status error";
+
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Send Reset Link";
+
+                return;
+            }
+
+
+            // Don't reveal whether
+            // an account exists
+            forgotPasswordStatus.textContent =
+                "If an admin account exists for this email, a password reset link has been sent.";
+
+            forgotPasswordStatus.className =
+                "admin-login-status success";
+
+
+            button.disabled = false;
+
+            button.textContent =
+                "Send Reset Link";
 
         }
     );
